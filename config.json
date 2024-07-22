@@ -1,0 +1,8 @@
+{
+    "launcher_path": "D:\\PokeOne\\PokeOne\\Launcher.exe",
+    "images_path": "D:\\PokeOne\\PokeBot\\Bot\\Image",
+    "moves_json": "D:\\PokeOne\\PokeBot\\Bot\\Database\\moves.json",
+    "type_effectiveness_json": "D:\\PokeOne\\PokeBot\\Bot\\Database\\type_effectiveness.json",
+    "species_json": "D:\\PokeOne\\PokeBot\\Bot\\Database\\species.json",
+    "tesseract_cmd": "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
+}
