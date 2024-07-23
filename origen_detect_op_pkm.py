@@ -73,8 +73,7 @@ def log_shiny_encounter(pokemon_name):
 def main():
     if switch_to_pokeone_window():
         processed_pokemon = set()
-        encounter_count = 0
-        while encounter_count < 5:
+        while True:
             # Chụp màn hình
             screen = capture_screen()
 
@@ -82,7 +81,6 @@ def main():
             raw_text = find_opponent_pokemon_name(screen)
             if raw_text and raw_text not in processed_pokemon:
                 processed_pokemon.add(raw_text)
-                encounter_count += 1
 
                 if raw_text.startswith('S '):
                     log_shiny_encounter(raw_text)
@@ -104,7 +102,6 @@ def main():
             
             # Chờ một khoảng thời gian trước khi chụp màn hình tiếp theo
             time.sleep(2)
-        print("Đã gặp 5 Pokémon.")
     else:
         print("Không tìm thấy cửa sổ PokeOne")
 
