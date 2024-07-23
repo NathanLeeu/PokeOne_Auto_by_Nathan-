@@ -1,0 +1,10 @@
+tôi muốn tạo 1 file python có thể đồng thời sử dụng khả năng của 2 sources code trên source đầu tiên là: "D:\PokeOne\PokeBot\Bot\TestUV9.py" và source2 là: "D:\PokeOne\PokeBot\Bot\origen_detect_op_pkm.py", Bổ sung thêm khả năng tìm ra chiêu có lượng damage lớn nhất dựa trên power của chiêu thức trong file moves.json, đồng thời hiển thị là chiêu thức còn lượt sử dụng nếu PP: "XX/YY" có XX khác 00 và hiển thị chiêu thức đã hết lượt sử dụng nếu pp: "XX/YY" có XX = 00. Traceback (most recent call last):
+  File "d:\PokeOne\PokeBot\Bot\TestUV10.py", line 194, in <module>
+    main()
+  File "d:\PokeOne\PokeBot\Bot\TestUV10.py", line 162, in main
+    best_move = find_highest_damage_move(moves_data)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "d:\PokeOne\PokeBot\Bot\TestUV10.py", line 91, in find_highest_damage_move
+    if power > max_damage:
+       ^^^^^^^^^^^^^^^^^^
+TypeError: '>' not supported between instances of 'NoneType' and 'int'. Yêu cầu khi run chương trình python này thì Tự detect cửa sổ PokeOne, nếu chưa có cửa sổ Pokeone thì tự khởi chạy launcher theo đường dẫn: ""D:\PokeOne\PokeOne\Launcher.exe" sau đó đọc trên màn hình tìm nút "GO!" sau khi click nút GO! chờ 1 giây rồi tìm trên màn hình nút Login, sau khi Click nút Login thì pop up 1 bảng terminal nhỏ có chưa các chức năng:  có các chức năng AFK, EXP, Shiny, EXP+Shiny, Fishing, nếu chọn AFK thì random click chuột mỗi 180 giây (+-30) để tránh bị phát hiện là dùng phần mềm thứ 3. nếu chọn EXP farm thì tạo 1 vòng lặp, vòng lặp bao gồm việc: bấm mũ tên trái liên tục 5 lần (+-3) và bên phải cũng tương tự dôi khi bấm mũi tên lên rồi xuống  một cách ngãu nhiên để bị tránh bị coi là gian lận, và trong quá trình này thì quét captured screen liên tục để tìm nút fight ( là nút Fight.png), và sau khi detect được nút fight thì sẽ quét màn hình để thực hiện việc phát hiện các thông tin như chức năng của 2 file python ban đầu mà tôi yêu cầu bạn ghi nhớ 

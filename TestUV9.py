@@ -72,28 +72,41 @@ def extract_text_around_center(screen, center_pos):
     print("Đang trích xuất văn bản xung quanh trung tâm...")
     h, w, _ = screen.shape
     skill_regions = [
-    (center_pos[0] - 160, center_pos[1] - 50, center_pos[0] - 40, center_pos[1] - 10),  # Top-left
-    (center_pos[0] + 50, center_pos[1] - 50, center_pos[0] + 170, center_pos[1] - 10),  # Top-right
-    (center_pos[0] - 160, center_pos[1] + 20, center_pos[0] - 40, center_pos[1] + 80),  # Bot-left
-    (center_pos[0] + 50, center_pos[1] + 20, center_pos[0] + 170, center_pos[1] + 80),  # Bot-right
+        (center_pos[0] - 160, center_pos[1] - 50, center_pos[0] - 40, center_pos[1] - 10),  # Top-left
+        (center_pos[0] + 50, center_pos[1] - 50, center_pos[0] + 170, center_pos[1] - 10),  # Top-right
+        (center_pos[0] - 160, center_pos[1] + 20, center_pos[0] - 40, center_pos[1] + 80),  # Bot-left
+        (center_pos[0] + 50, center_pos[1] + 20, center_pos[0] + 170, center_pos[1] + 80),  # Bot-right
+    ]
 
-       (center_pos[0] - 170, center_pos[1] - 25, center_pos[0] - 30, center_pos[1] + 15),  # Top-left PP
+    pp_regions = [
+        (center_pos[0] - 170, center_pos[1] - 25, center_pos[0] - 30, center_pos[1] + 15),  # Top-left PP
         (center_pos[0] + 50, center_pos[1] - 25, center_pos[0] + 170, center_pos[1] + 15),  # Top-right PP
         (center_pos[0] - 170, center_pos[1] + 55, center_pos[0] - 30 , center_pos[1] + 97),  # Bot-left PP
         (center_pos[0] + 50, center_pos[1] + 40, center_pos[0] + 170, center_pos[1] + 97),  # Bot-right PP
     ]
 
     skill_texts = []
+    pp_texts = []
+
     for region in skill_regions:
         x1, y1, x2, y2 = region
         x1, y1 = max(0, x1), max(0, y1)
         x2, y2 = min(w, x2), min(h, y2)
         skill_img = screen[y1:y2, x1:x2]
         preprocessed_img = preprocess_image(skill_img)
-        text = pytesseract.image_to_string(preprocessed_img, config='--psm 7').strip()
-        skill_texts.append(text)
-    
-    return skill_texts
+        skill_text = pytesseract.image_to_string(preprocessed_img, config='--psm 7').strip()
+        skill_texts.append(skill_text)
+        
+    for pp_region in pp_regions:
+        x1, y1, x2, y2 = pp_region
+        x1, y1 = max(0, x1), max(0, y1)
+        x2, y2 = min(w, x2), min(h, y2)
+        pp_img = screen[y1:y2, x1:x2]
+        preprocessed_pp_img = preprocess_image(pp_img)
+        pp_text = pytesseract.image_to_string(preprocessed_pp_img, config='--psm 7').strip()
+        pp_texts.append(pp_text)
+
+    return skill_texts, pp_texts
 
 def find_skill_info(skill_name, moves_data):
     for move in moves_data:
@@ -122,15 +135,13 @@ def main_loop():
             screen = capture_screen()
             center_pos = detect_center_circle(screen, CENTER_IMAGE_PATH)
             if center_pos:
-                skill_texts = extract_text_around_center(screen, center_pos)
-                print("Tên các kỹ năng được phát hiện:")
-                for text in skill_texts:
-                    if text:
-                        skill_info = find_skill_info(text, moves_data)
-                        if skill_info:
-                            print(json.dumps(skill_info, indent=2, ensure_ascii=False))
-                        else:
-                            print(f"Không tìm thấy thông tin cho kỹ năng: {text}")
+                skill_texts, pp_texts = extract_text_around_center(screen, center_pos)
+                print("Tên các kỹ năng và PP được phát hiện:")
+                for skill_text, pp_text in zip(skill_texts, pp_texts):
+                    if skill_text or pp_text:
+                        skill_info = find_skill_info(skill_text, moves_data) if skill_text else {}
+                        skill_info['pp'] = pp_text
+                        print(json.dumps(skill_info, indent=2, ensure_ascii=False))
             else:
                 print("Không tìm thấy vòng tròn trung tâm. Bỏ qua việc trích xuất kỹ năng.")
         except Exception as e:
